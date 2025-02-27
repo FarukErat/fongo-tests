@@ -97,9 +97,10 @@ public class FongoTests {
 
     @Test
     void countDocuments_whenDocsInserted_returnsCorrectCount() {
-        Document doc1 = new Document("name", "Alice").append("age", 25);
-        Document doc2 = new Document("name", "Bob").append("age", 30);
-        collection.insertMany(Arrays.asList(doc1, doc2));
+        collection.insertMany(Arrays.asList(
+            new Document("name", "Alice").append("age", 25),
+            new Document("name", "Bob").append("age", 30))
+        );
 
         long count = collection.count();
         assertEquals(2, count, "Expected count of documents to be 2");
