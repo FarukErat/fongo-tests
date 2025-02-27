@@ -24,6 +24,12 @@ public class FongoTests {
         collection = database.getCollection("users");
     }
 
+    @AfterEach
+    void tearDown() {
+        database.drop();
+        mongoClient.close();
+    }
+
     @Test
     void testInsertAndFindDocument() {
         Document doc = new Document("name", "Alice").append("age", 25);
@@ -41,11 +47,5 @@ public class FongoTests {
         Document found = collection.find(new Document("name", "Bob")).first();
 
         assertNull(found, "Expected no document for name 'Bob'");
-    }
-
-    @AfterEach
-    void tearDown() {
-        database.drop();
-        mongoClient.close();
     }
 }
