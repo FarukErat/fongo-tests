@@ -31,7 +31,7 @@ public class FongoTests {
     }
 
     @Test
-    void testInsertAndFindDocument() {
+    void find_whenDocExists_returnsDocument() {
         Document doc = new Document("name", "Alice").append("age", 25);
 
         collection.insertOne(doc);
@@ -43,7 +43,7 @@ public class FongoTests {
     }
 
     @Test
-    void testDocumentNotFound() {
+    void find_whenDocDoesNotExist_returnsNull() {
         Document found = collection.find(new Document("name", "Bob")).first();
 
         assertNull(found, "Expected no document for name 'Bob'");
