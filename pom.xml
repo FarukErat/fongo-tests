@@ -40,6 +40,21 @@
             <version>2.0.16</version>
         </dependency>
 
+        <!-- TESTS -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.12.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.12.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
