@@ -144,10 +144,10 @@ public class FongoTests {
     @Test
     void aggregateComplexGroupSortProject_returnsExpectedResults() {
         usersCollection.insertMany(Arrays.asList(
-                new Document("name", "Alice").append("age", 30).append("department", "Engineering"),
-                new Document("name", "Bob").append("age", 30).append("department", "Engineering"),
-                new Document("name", "Charlie").append("age", 25).append("department", "HR"),
-                new Document("name", "Dave").append("age", 25).append("department", "HR"),
+                new Document("name", "Alice").append("age", 35).append("department", "Engineering"),
+                new Document("name", "Bob").append("age", 25).append("department", "Engineering"),
+                new Document("name", "Charlie").append("age", 24).append("department", "HR"),
+                new Document("name", "Dave").append("age", 26).append("department", "HR"),
                 new Document("name", "Eve").append("age", 28).append("department", "Sales")
         ));
 
