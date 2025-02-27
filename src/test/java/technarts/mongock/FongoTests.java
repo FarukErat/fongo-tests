@@ -104,4 +104,40 @@ public class FongoTests {
         long count = usersCollection.count();
         assertEquals(2, count, "Expected count of documents to be 2");
     }
+
+    @Test
+    void aggregateWithGroupAndCount_whenDocsExist_returnsAggregatedResults() {
+        usersCollection.insertMany(Arrays.asList(
+                new Document("name", "Alice").append("age", 25),
+                new Document("name", "Alice").append("age", 30),
+                new Document("name", "Bob").append("age", 35),
+                new Document("name", "Bob").append("age", 40),
+                new Document("name", "Charlie").append("age", 20)
+        ));
+
+        List<Document> results = usersCollection.aggregate(List.of(
+                new Document("$group", new Document("_id", "$name")
+                        .append("totalAge", new Document("$sum", "$age"))
+                        .append("userCount", new Document("$sum", 1)))
+        )).into(new ArrayList<>());
+
+        assertEquals(3, results.size(), "Expected three groups: Alice, Bob, and Charlie");
+
+        for (Document result : results) {
+            String name = result.getString("_id");
+            int totalAge = result.getInteger("totalAge");
+            int userCount = result.getInteger("userCount");
+
+            if ("Alice".equals(name)) {
+                assertEquals(55, totalAge, "Expected total age for Alice to be 55");
+                assertEquals(2, userCount, "Expected user count for Alice to be 2");
+            } else if ("Bob".equals(name)) {
+                assertEquals(75, totalAge, "Expected total age for Bob to be 75");
+                assertEquals(2, userCount, "Expected user count for Bob to be 2");
+            } else if ("Charlie".equals(name)) {
+                assertEquals(20, totalAge, "Expected total age for Charlie to be 20");
+                assertEquals(1, userCount, "Expected user count for Charlie to be 1");
+            }
+        }
+    }
 }
