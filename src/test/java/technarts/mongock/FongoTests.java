@@ -140,4 +140,45 @@ public class FongoTests {
             }
         }
     }
+
+    @Test
+    void aggregateComplexGroupSortProject_returnsExpectedResults() {
+        usersCollection.insertMany(Arrays.asList(
+                new Document("name", "Alice").append("age", 30).append("department", "Engineering"),
+                new Document("name", "Bob").append("age", 30).append("department", "Engineering"),
+                new Document("name", "Charlie").append("age", 25).append("department", "HR"),
+                new Document("name", "Dave").append("age", 25).append("department", "HR"),
+                new Document("name", "Eve").append("age", 28).append("department", "Sales")
+        ));
+
+        List<Document> pipeline = Arrays.asList(
+                new Document("$group", new Document("_id", "$department")
+                        .append("averageAge", new Document("$avg", "$age"))
+                        .append("count", new Document("$sum", 1))),
+                new Document("$sort", new Document("averageAge", -1)),
+                new Document("$project", new Document("department", "$_id")
+                        .append("averageAge", 1)
+                        .append("count", 1)
+                        .append("_id", 0))
+        );
+
+        List<Document> results = usersCollection.aggregate(pipeline).into(new ArrayList<>());
+
+        assertEquals(3, results.size(), "Expected results for 3 departments");
+
+        Document engineeringDept = results.get(0);
+        assertEquals("Engineering", engineeringDept.getString("department"));
+        assertEquals(30.0, engineeringDept.getDouble("averageAge"), 0.01, "Engineering average age mismatch");
+        assertEquals(2, engineeringDept.getInteger("count"), "Engineering employee count mismatch");
+
+        Document salesDept = results.get(1);
+        assertEquals("Sales", salesDept.getString("department"));
+        assertEquals(28.0, salesDept.getDouble("averageAge"), 0.01, "Sales average age mismatch");
+        assertEquals(1, salesDept.getInteger("count"), "Sales employee count mismatch");
+
+        Document hrDept = results.get(2);
+        assertEquals("HR", hrDept.getString("department"));
+        assertEquals(25.0, hrDept.getDouble("averageAge"), 0.01, "HR average age mismatch");
+        assertEquals(2, hrDept.getInteger("count"), "HR employee count mismatch");
+    }
 }
