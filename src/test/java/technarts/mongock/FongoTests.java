@@ -15,20 +15,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FongoTests {
 
-    private static MongoDatabase database;
     private static MongoCollection<Document> usersCollection;
 
     @BeforeAll
     static void setUp() {
         Fongo fongo = new Fongo("mockDB");
         MongoClient mongoClient = fongo.getMongo();
-        database = mongoClient.getDatabase("testDB");
+        MongoDatabase database = mongoClient.getDatabase("testDB");
         usersCollection = database.getCollection("users");
     }
 
     @AfterEach
     void tearDown() {
-        database.drop();
+        usersCollection.drop();
     }
 
     @Test
