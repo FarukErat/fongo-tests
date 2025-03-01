@@ -15,14 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FongoTests {
 
-    private static MongoClient mongoClient;
     private static MongoDatabase database;
     private static MongoCollection<Document> usersCollection;
 
     @BeforeAll
     static void setUp() {
         Fongo fongo = new Fongo("mockDB");
-        mongoClient = fongo.getMongo();
+        MongoClient mongoClient = fongo.getMongo();
         database = mongoClient.getDatabase("testDB");
         usersCollection = database.getCollection("users");
     }
