@@ -15,12 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FongoTests {
 
-    private MongoClient mongoClient;
-    private MongoDatabase database;
-    private MongoCollection<Document> usersCollection;
+    private static MongoClient mongoClient;
+    private static MongoDatabase database;
+    private static MongoCollection<Document> usersCollection;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         Fongo fongo = new Fongo("mockDB");
         mongoClient = fongo.getMongo();
         database = mongoClient.getDatabase("testDB");
@@ -30,7 +30,6 @@ public class FongoTests {
     @AfterEach
     void tearDown() {
         database.drop();
-        mongoClient.close();
     }
 
     @Test
