@@ -1,7 +1,6 @@
 package technarts.mongock;
 
 import com.github.fakemongo.Fongo;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -20,8 +19,7 @@ public class FongoTests {
     @BeforeAll
     static void setUp() {
         Fongo fongo = new Fongo("mockDB");
-        MongoClient mongoClient = fongo.getMongo();
-        MongoDatabase database = mongoClient.getDatabase("testDB");
+        MongoDatabase database = fongo.getDatabase("testDB");
         usersCollection = database.getCollection("users");
     }
 
